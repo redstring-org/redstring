@@ -1,0 +1,60 @@
+{
+  "case": {
+    "case_id": "CASE-GOLD-001",
+    "case_title": "VendorCo contractor remote-access anomaly with potential on-campus linkage",
+    "location": "South Service Entrance SE-3 / Imaging Service Corridor",
+    "primary_subject": "John Mercer (VendorCo biomedical contractor)",
+    "trigger_summary": "Successful VPN login from a new device while the remote session remains active."
+  },
+  "identity_record": {
+    "person_id": "P-1007",
+    "full_name": "John Mercer",
+    "account": "jmercer@vendorco",
+    "company": "VendorCo",
+    "role": "Biomedical contractor",
+    "badge_id": "B-1842",
+    "badge_status": "active",
+    "night_schedule_status": "unknown",
+    "approved_after_hours_work_order": "unknown",
+    "escort_required_after_hours": true
+  },
+  "badge_mapping": {
+    "badge_id": "B-1842",
+    "person_id": "P-1007",
+    "full_name": "John Mercer",
+    "company": "VendorCo",
+    "mapping_type": "exact"
+  },
+  "door_mapping": {
+    "door_id": "SE-3",
+    "door_name": "South Service Entrance SE-3",
+    "building_id": "BLDG-SOUTH-01",
+    "building_name": "South Service Wing",
+    "zone_id": "Z-SOUTH-SERVICE-ENTRANCE",
+    "zone_name": "South Service Entrance",
+    "after_hours_sensitive": true
+  },
+  "zone_adjacency": {
+    "from_zone_id": "Z-SOUTH-SERVICE-ENTRANCE",
+    "to_zone_id": "Z-IMAGING-CORRIDOR",
+    "relationship": "adjacent_one_hop_same_building",
+    "building_id": "BLDG-SOUTH-01"
+  },
+  "reason_codes": {
+    "unexpected_login": "Unexpected device login succeeded on vendor contractor account",
+    "active_session": "Active VPN session remains live",
+    "badge_maps": "Badge B-1842 maps to John Mercer",
+    "after_hours_badge": "After-hours badge use at South Service Entrance SE-3",
+    "officer_report_adjacent": "Officer report in adjacent Imaging Service Corridor within seven minutes",
+    "no_escort": "No escort observed",
+    "no_campus_evidence": "No linked on-campus evidence yet",
+    "schedule_unconfirmed": "Contractor schedule not yet confirmed",
+    "session_unconfirmed": "Remote session legitimacy not yet confirmed"
+  },
+  "next_actions": {
+    "observe": "Call the SOC now to confirm whether the active VPN session for jmercer@vendorco is still live and whether the MFA approval was legitimate.",
+    "verify_now": "Call the VendorCo night supervisor now to confirm whether John Mercer is scheduled onsite and carrying badge B-1842.",
+    "escalate_now": "Dispatch an officer to Imaging Service Corridor now to identify the person reported near Door SE-3."
+  },
+  "escalation_recommendation": "Notify protective services leadership and SOC now."
+}
