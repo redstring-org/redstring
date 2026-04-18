@@ -1,8 +1,12 @@
 ## RedString
 
 **Hackathon Project**
-
 When everyone else sees noise, RedString sees the pattern.  
+
+### setup venv
+python3 -m venv .venv
+source ./.venv/bin/activate
+
 
 in a 500 bed hospital with 4000 staff
 
