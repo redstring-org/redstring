@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "event_id": "OS-0208-001",
+      "source_label": "Public post or forum item",
+      "source_type": "forum",
+      "observed_at": "2026-04-18T02:08:00-04:00",
+      "ingested_at": "2026-04-18T02:09:10-04:00",
+      "campus_id": "RMC-MAIN",
+      "facility_hint": "hospital south service entrance",
+      "location_hint": "South Service Entrance area",
+      "url": "https://example.invalid/osint-item",
+      "summary": "Possible unusual vendor activity near hospital service entrance.",
+      "provenance_status": "preserved",
+      "allowed_role": "context_only"
+    }
+  ]
+}
