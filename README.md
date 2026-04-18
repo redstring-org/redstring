@@ -69,3 +69,15 @@ post_id,screen_name,posted_at,url,text,is_reply
 2045503770121978233,DCPoliceDept,2026-04-18T14:04:37.000Z,https://x.com/DCPoliceDept/status/2045503770121978233,Taylor Simmons has been located. Thank you for your help.,no
 ```
 
+### POST badge events to a local ingest API
+Read the generated badge events CSV and send each row as JSON to the ingest endpoint:
+
+```bash
+python3 post_badge_events_csv.py --csv-file hospital_badge_events_24h.csv --endpoint http://localhost/api/ingest
+```
+
+Stop on the first failed request:
+
+```bash
+python3 post_badge_events_csv.py --csv-file hospital_badge_events_24h.csv --endpoint http://localhost/api/ingest --stop-on-error
+```
