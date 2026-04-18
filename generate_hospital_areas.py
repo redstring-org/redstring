@@ -4,7 +4,7 @@
 import csv
 
 OUTPUT_FILE = "hospital_areas_500bed.csv"
-HOSPITAL_NAME = "Redstring General Hospital"
+HOSPITAL_NAME = "Walter Reed Hospital"
 HOSPITAL_BEDS = 500
 
 HOSPITAL_AREAS = {

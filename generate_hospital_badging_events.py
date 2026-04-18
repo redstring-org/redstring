@@ -49,8 +49,9 @@ def default_shift_window(shift_label: str, now: datetime.datetime) -> Tuple[date
         start = hours_to_time(8)
         end = hours_to_time(16)
 
-    start_dt = datetime.datetime.combine(now.date(), start)
-    end_dt = datetime.datetime.combine(now.date(), end)
+    utc = datetime.timezone.utc
+    start_dt = datetime.datetime.combine(now.date(), start, tzinfo=utc)
+    end_dt = datetime.datetime.combine(now.date(), end, tzinfo=utc)
     if end_dt <= start_dt:
         end_dt += datetime.timedelta(days=1)
     return start_dt, end_dt
@@ -65,8 +66,9 @@ def shift_window_for_staff(staff: Dict[str, str], now: datetime.datetime) -> Opt
     start_time = parse_time(staff.get("shift_start", ""))
     end_time = parse_time(staff.get("shift_end", ""))
     if start_time and end_time:
-        start_dt = datetime.datetime.combine(now.date(), start_time)
-        end_dt = datetime.datetime.combine(now.date(), end_time)
+        utc = datetime.timezone.utc
+        start_dt = datetime.datetime.combine(now.date(), start_time, tzinfo=utc)
+        end_dt = datetime.datetime.combine(now.date(), end_time, tzinfo=utc)
         if end_dt <= start_dt:
             end_dt += datetime.timedelta(days=1)
         return start_dt, end_dt
@@ -128,7 +130,7 @@ def clamp_timestamp(timestamp: datetime.datetime, earliest: datetime.datetime, l
 
 def build_event_row(staff: Dict[str, str], event_time: datetime.datetime, door: Dict[str, str], action: str) -> Dict[str, str]:
     return {
-        "timestamp": event_time.isoformat(sep=" ", timespec="seconds"),
+        "timestamp": event_time.isoformat(timespec="milliseconds") + "Z",
         "staff_id": staff.get("staff_id", ""),
         "first_name": staff.get("first_name", ""),
         "last_name": staff.get("last_name", ""),
@@ -258,7 +260,7 @@ def main() -> int:
     events = generate_badging_history(
         staff_rows,
         doors_rows,
-        now=datetime.datetime.now(),
+        now=datetime.datetime.now(datetime.timezone.utc),
         include_off_duty=args.include_off_duty,
         max_staff=args.max_staff if args.max_staff > 0 else None,
     )
