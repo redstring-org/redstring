@@ -1,8 +1,52 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+
+class LiveEventResponse(BaseModel):
+    id: int
+    kind: str
+    timestamp: Optional[str]
+    summary: str
+    source: str
+
+    @classmethod
+    def from_raw(cls, row: dict[str, Any]) -> "LiveEventResponse":
+        p = row["payload"]
+        kind = row["kind"]
+
+        if kind == "badge_access":
+            name = f"{p.get('first_name', '')} {p.get('last_name', '')}".strip() or p.get("staff_id", "unknown")
+            door = p.get("door_name", p.get("area", "unknown door"))
+            result = p.get("access_result", "")
+            summary = f"{name} — {door}" + (f" ({result})" if result else "")
+            source = "Badge Access"
+        elif kind == "suspicious_person_report":
+            desc = p.get("description", "")
+            loc = p.get("location", "")
+            summary = f"{loc}: {desc}" if loc else desc
+            source = "Officer Report"
+        elif kind == "osint_post":
+            summary = p.get("text", p.get("content", ""))[:120]
+            source = p.get("username", "OSINT")
+        else:
+            summary = str(p)[:120]
+            source = kind
+
+        return cls(
+            id=row["id"],
+            kind=kind,
+            timestamp=row.get("timestamp"),
+            summary=summary,
+            source=source,
+        )
+
+
+class LiveEventsResponse(BaseModel):
+    total: int
+    events: list["LiveEventResponse"]
 
 
 class TimelineItem(BaseModel):
@@ -36,4 +80,24 @@ class ActiveCaseResponse(BaseModel):
 
 
 class InjectEventRequest(BaseModel):
-    event_id: str
+    model_config = ConfigDict(extra="allow")
+
+    event_id: Optional[str] = None
+    timestamp: Optional[str] = None
+    staff_id: Optional[int | str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    role_title: Optional[str] = None
+    role_category: Optional[str] = None
+    department: Optional[str] = None
+    shift: Optional[str] = None
+    door_name: Optional[str] = None
+    category: Optional[str] = None
+    area: Optional[str] = None
+    door_type: Optional[str] = None
+    badge_required: Optional[str] = None
+    action: Optional[str] = None
+    access_result: Optional[str] = None
+
+    def raw_payload(self) -> dict[str, Any]:
+        return self.model_dump(exclude_none=True, exclude={"event_id"})

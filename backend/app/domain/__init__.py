@@ -1,1 +1,1 @@
-"""Domain package."""
+"""Deterministic engine domain logic."""

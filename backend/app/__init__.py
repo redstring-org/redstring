@@ -1,1 +1,1 @@
-"""Backend application package."""
+"""RedString backend app package."""

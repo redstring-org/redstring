@@ -18,7 +18,7 @@ export function CaseCard({ activeCase }: Props) {
   return (
     <article className={`case-card ${sc}`}>
 
-      {/* 1 — State badge (most prominent) + next action */}
+      {/* 1 — State badge + next action */}
       <div className="state-hero">
         <span className="state-badge">
           <span className="badge-dot" />
@@ -30,7 +30,7 @@ export function CaseCard({ activeCase }: Props) {
         </p>
       </div>
 
-      {/* 2 — Case metadata (subordinate strip) */}
+      {/* 2 — Case metadata strip */}
       <dl className="case-meta">
         <div className="meta-field">
           <dt className="meta-label">Subject</dt>

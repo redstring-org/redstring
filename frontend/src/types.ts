@@ -1,3 +1,16 @@
+export type LiveEvent = {
+  id: number;
+  kind: "badge_access" | "suspicious_person_report" | "osint_post" | string;
+  timestamp: string | null;
+  summary: string;
+  source: string;
+};
+
+export type LiveEventsResponse = {
+  total: number;
+  events: LiveEvent[];
+};
+
 export type TimelineItem = {
   event_id: string;
   timestamp: string;
