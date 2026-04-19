@@ -1,0 +1,34 @@
+{
+  "scenario_id": "scenario_01_hospital_corridor_probe",
+  "title": "Hospital campus cyber-physical correlation demo seed",
+  "date": "2026-04-18",
+  "purpose": "Demo seed data for a cyber-physical correlation engine hackathon prototype.",
+  "linked_hypothesis": "A facilities badge identity appears in restricted areas near the same time as suspicious person reports and external OSINT signals around the hospital perimeter and pharmacy corridor.",
+  "files": [
+    {
+      "name": "badge_events.csv",
+      "description": "Background badge traffic plus one suspicious movement pattern."
+    },
+    {
+      "name": "suspicious_person_reports.csv",
+      "description": "Physical security reports that can be correlated by time and location."
+    },
+    {
+      "name": "osint_posts.csv",
+      "description": "Public posts that may reinforce situational context around the incident."
+    }
+  ],
+  "demo_focus": {
+    "operator_persona": "Hospital Security Duty Manager",
+    "decision": "Observe vs Verify Now vs Escalate Now",
+    "expected_case_subject": "Jordan Lee / badge_id 207",
+    "expected_key_locations": [
+      "Service Entrance",
+      "Emergency Department Ambulance Bay",
+      "Imaging Service Corridor",
+      "Pharmacy Hallway",
+      "Data Center Corridor"
+    ],
+    "expected_time_window_utc": "2026-04-18T06:05:00Z to 2026-04-18T07:52:59Z"
+  }
+}
