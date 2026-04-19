@@ -1,85 +1,166 @@
 from __future__ import annotations
 
-from app.api.routes import get_active_case, inject_event, reset_demo
+from app.api.routes import get_active_case, get_case_groups, inject_event, reset_demo
 from app.raw_event_store import raw_event_store
 from app.schemas import InjectEventRequest
-from app.state_store import store
 
 
 def setup_function() -> None:
-    store.reset()
     raw_event_store.reset()
 
 
-def test_demo_injection_flow_updates_single_case() -> None:
+def _inject_qualified_emergency_group() -> None:
+    inject_event(
+        InjectEventRequest(
+            timestamp="2026-04-18T06:05:00.000Z",
+            staff_id="11",
+            first_name="Taylor",
+            last_name="Davis",
+            door_name="Emergency Department Ambulance Bay",
+            area="Emergency Department Ambulance Bay",
+            access_result="Granted",
+        )
+    )
+    inject_event(
+        InjectEventRequest(
+            report_id="SPR-0001",
+            occurred_at="2026-04-18T06:10:56.350Z",
+            reporter="medical staff",
+            location="Emergency Department Ambulance Bay",
+            description="Person in mismatched scrubs observed pushing unattended equipment cases.",
+            verified="yes",
+        )
+    )
+    inject_event(
+        InjectEventRequest(
+            post_id="POST-0001",
+            screen_name="citywatch",
+            posted_at="2026-04-18T06:12:00.000Z",
+            location="Emergency Department Ambulance Bay",
+            text="Unusual overnight equipment movement reported outside the ambulance bay.",
+        )
+    )
+
+
+def test_active_case_is_empty_before_any_group_qualifies() -> None:
     active_case = get_active_case()
+
     assert active_case.state is None
+    assert active_case.timeline == []
+    assert active_case.case_title == "Awaiting qualified correlated case group"
+    assert active_case.trigger_summary == "No case group has reached the minimum threshold of 3 linked events yet."
 
-    observe_case = inject_event(InjectEventRequest(event_id="CY-0213-001"))
-    assert observe_case.case_id == "CASE-GOLD-001"
-    assert observe_case.state == "Observe"
-    assert observe_case.next_human_check == (
-        "Call the SOC now to confirm whether the active VPN session for jmercer@vendorco is still live "
-        "and whether the MFA approval was legitimate."
+
+def test_case_groups_api_returns_empty_list_before_events() -> None:
+    result = get_case_groups()
+
+    assert result.total == 0
+    assert result.case_groups == []
+
+
+def test_demo_event_injection_does_not_open_active_case() -> None:
+    active_case = inject_event(InjectEventRequest(event_id="CY-0213-001"))
+
+    assert active_case.state is None
+    assert raw_event_store.count() == 1
+
+    groups = get_case_groups()
+    assert groups.total == 1
+    assert groups.case_groups[0].event_count == 1
+    assert groups.case_groups[0].qualified_at is None
+
+
+def test_group_of_three_mixed_events_opens_observe_case() -> None:
+    _inject_qualified_emergency_group()
+
+    active_case = get_active_case()
+
+    assert active_case.state == "Observe"
+    assert active_case.case_title == "Observed correlated case group requiring review"
+    assert active_case.location == "Emergency Department Ambulance Bay"
+    assert active_case.primary_subject == "Taylor Davis"
+    assert active_case.trigger_summary == (
+        "Case group qualified after 3 linked events: Badge Access, OSINT, Suspicious-Person Report."
     )
-    assert observe_case.escalation_recommendation is None
-    assert observe_case.why_linked == [
-        "Unexpected device login succeeded on vendor contractor account",
-        "Active VPN session remains live",
+    assert active_case.why_linked == [
+        "Case group reached the qualification threshold with 3 linked events",
+        "Badge-access activity is present in the qualified case group",
+        "Suspicious-person reporting is present in the qualified case group",
+        "OSINT context is present in the qualified case group",
+    ]
+    assert active_case.what_weakens_it == [
+        "Identity-level correlation across the grouped events still requires operator review"
+    ]
+    assert active_case.next_human_check == (
+        "Review badge activity, OSINT context, and suspicious-person reporting now to confirm whether they "
+        "describe the same onsite activity near Emergency Department Ambulance Bay."
+    )
+    assert active_case.escalation_recommendation is None
+    assert [item.event_id for item in active_case.timeline] == ["11", "SPR-0001", "POST-0001"]
+
+    groups = get_case_groups()
+    assert groups.total == 1
+    assert groups.case_groups[0].event_count == 3
+    assert groups.case_groups[0].qualified_at == "2026-04-18T06:12:00.000Z"
+    assert groups.case_groups[0].qualification_rank == 1
+
+
+def test_first_group_to_qualify_stays_active_when_later_group_qualifies() -> None:
+    _inject_qualified_emergency_group()
+    first_group = raw_event_store.get_first_qualified_case_group()
+    assert first_group is not None
+
+    inject_event(
+        InjectEventRequest(
+            timestamp="2026-04-18T08:15:00.000Z",
+            staff_id="77",
+            first_name="Jordan",
+            last_name="Lee",
+            door_name="Pharmacy Hallway",
+            area="Pharmacy Hallway",
+            access_result="Granted",
+        )
+    )
+    inject_event(
+        InjectEventRequest(
+            report_id="SPR-0099",
+            occurred_at="2026-04-18T08:16:00.000Z",
+            reporter="visitor",
+            location="Pharmacy Hallway",
+            description="Unknown person was seen opening supply cabinets near Pharmacy Hallway.",
+        )
+    )
+    inject_event(
+        InjectEventRequest(
+            post_id="POST-0099",
+            screen_name="scanner",
+            posted_at="2026-04-18T08:17:00.000Z",
+            location="Pharmacy Hallway",
+            text="Late-night activity reported in the pharmacy corridor.",
+        )
+    )
+
+    active_case = get_active_case()
+    assert active_case.case_id == first_group["case_group_id"]
+    assert active_case.location == "Emergency Department Ambulance Bay"
+
+    groups = get_case_groups()
+    assert groups.total == 2
+    assert sorted(group.qualification_rank for group in groups.case_groups if group.qualification_rank is not None) == [
+        1,
+        2,
     ]
 
-    verify_case = inject_event(InjectEventRequest(event_id="AC-0224-001"))
-    assert verify_case.case_id == "CASE-GOLD-001"
-    assert verify_case.state == "Verify Now"
-    assert verify_case.next_human_check == (
-        "Call the VendorCo night supervisor now to confirm whether John Mercer is scheduled onsite "
-        "and carrying badge B-1842."
-    )
-    assert verify_case.escalation_recommendation is None
-    assert verify_case.why_linked == [
-        "Unexpected device login succeeded on vendor contractor account",
-        "Active VPN session remains live",
-        "Badge B-1842 maps to John Mercer",
-        "After-hours badge use at South Service Entrance SE-3",
-    ]
 
-    escalate_case = inject_event(InjectEventRequest(event_id="IR-0231-001"))
-    assert escalate_case.case_id == "CASE-GOLD-001"
-    assert escalate_case.state == "Escalate Now"
-    assert escalate_case.next_human_check == (
-        "Dispatch an officer to Imaging Service Corridor now to identify the person reported near Door SE-3."
-    )
-    assert escalate_case.escalation_recommendation == "Notify protective services leadership and SOC now."
-    assert escalate_case.why_linked == [
-        "Unexpected device login succeeded on vendor contractor account",
-        "Active VPN session remains live",
-        "Badge B-1842 maps to John Mercer",
-        "After-hours badge use at South Service Entrance SE-3",
-        "Officer report in adjacent Imaging Service Corridor within seven minutes",
-        "No escort observed",
-    ]
-    assert [item.event_id for item in escalate_case.timeline] == ["CY-0213-001", "AC-0224-001", "IR-0231-001"]
-    assert raw_event_store.count() == 3
-
-
-def test_duplicate_inject_does_not_create_duplicate_case_events() -> None:
-    first = inject_event(InjectEventRequest(event_id="CY-0213-001"))
-    second = inject_event(InjectEventRequest(event_id="CY-0213-001"))
-
-    assert first.case_id == second.case_id == "CASE-GOLD-001"
-    assert [item.event_id for item in second.timeline] == ["CY-0213-001"]
-
-
-def test_demo_reset_clears_active_case_state() -> None:
-    inject_event(InjectEventRequest(event_id="CY-0213-001"))
+def test_demo_reset_clears_groups_and_active_case() -> None:
+    _inject_qualified_emergency_group()
 
     reset_case = reset_demo()
 
     assert reset_case.state is None
     assert reset_case.timeline == []
-    assert reset_case.why_linked == []
-    assert reset_case.escalation_recommendation is None
     assert raw_event_store.count() == 0
+    assert get_case_groups().case_groups == []
 
 
 def test_unknown_event_id_returns_400() -> None:
@@ -90,160 +171,3 @@ def test_unknown_event_id_returns_400() -> None:
         assert raw_event_store.count() == 0
     else:
         raise AssertionError("Expected HTTPException for unknown event id")
-
-
-def test_raw_badge_payload_is_accepted_and_saved_without_changing_case_state() -> None:
-    case = inject_event(
-        InjectEventRequest(
-            timestamp="2026-04-18T07:45:00.000+00:00Z",
-            staff_id="11",
-            first_name="Taylor",
-            last_name="Davis",
-            role_title="Registered Nurse",
-            role_category="Clinical staff",
-            department="Laboratory",
-            shift="Rotating",
-            door_name="Main Entrance",
-            category="Perimeter",
-            area="Hospital Perimeter",
-            door_type="Perimeter Door",
-            badge_required="Yes",
-            action="enter",
-            access_result="Granted",
-        )
-    )
-
-    assert case.state is None
-    assert case.timeline == []
-    assert raw_event_store.count() == 1
-    assert raw_event_store.latest_payload() == {
-        "timestamp": "2026-04-18T07:45:00.000+00:00Z",
-        "staff_id": "11",
-        "first_name": "Taylor",
-        "last_name": "Davis",
-        "role_title": "Registered Nurse",
-        "role_category": "Clinical staff",
-        "department": "Laboratory",
-        "shift": "Rotating",
-        "door_name": "Main Entrance",
-        "category": "Perimeter",
-        "area": "Hospital Perimeter",
-        "door_type": "Perimeter Door",
-        "badge_required": "Yes",
-        "action": "enter",
-        "access_result": "Granted",
-    }
-    case_groups = raw_event_store.list_case_groups()
-    assert len(case_groups) == 1
-    assert len(raw_event_store.list_case_group_event_ids(case_groups[0]["case_group_id"])) == 1
-
-
-def test_raw_osint_post_payload_is_accepted_and_saved_without_changing_case_state() -> None:
-    case = inject_event(
-        InjectEventRequest(
-            post_id="2045539490546995340",
-            screen_name="DCPoliceDept",
-            posted_at="2026-04-18T16:26:33.000Z",
-            url="https://x.com/DCPoliceDept/status/2045539490546995340",
-            text="Expect road closures for several hours for the Major Crash Investigation.",
-            is_reply="no",
-        )
-    )
-
-    assert case.state is None
-    assert case.timeline == []
-    assert raw_event_store.count() == 1
-    assert raw_event_store.latest_payload() == {
-        "post_id": "2045539490546995340",
-        "screen_name": "DCPoliceDept",
-        "posted_at": "2026-04-18T16:26:33.000Z",
-        "url": "https://x.com/DCPoliceDept/status/2045539490546995340",
-        "text": "Expect road closures for several hours for the Major Crash Investigation.",
-        "is_reply": "no",
-    }
-
-
-def test_raw_suspicious_person_payload_is_accepted_and_saved_without_changing_case_state() -> None:
-    case = inject_event(
-        InjectEventRequest(
-            report_id="SPR-0001",
-            occurred_at="2026-04-18T06:10:56.350Z",
-            reporter="medical staff",
-            location="Emergency Department Ambulance Bay",
-            description=(
-                "Person in mismatched scrubs observed pushing unattended equipment cases toward "
-                "Emergency Department Ambulance Bay."
-            ),
-            verified="yes",
-            person_removed="yes",
-        )
-    )
-
-    assert case.state is None
-    assert case.timeline == []
-    assert raw_event_store.count() == 1
-    assert raw_event_store.latest_payload() == {
-        "report_id": "SPR-0001",
-        "occurred_at": "2026-04-18T06:10:56.350Z",
-        "reporter": "medical staff",
-        "location": "Emergency Department Ambulance Bay",
-        "description": (
-            "Person in mismatched scrubs observed pushing unattended equipment cases toward "
-            "Emergency Department Ambulance Bay."
-        ),
-        "verified": "yes",
-        "person_removed": "yes",
-    }
-
-
-def test_related_raw_events_are_grouped_into_one_case_cluster() -> None:
-    inject_event(
-        InjectEventRequest(
-            timestamp="2026-04-18T06:05:00.000Z",
-            staff_id="11",
-            door_name="Emergency Department Ambulance Bay",
-            area="Emergency Department Ambulance Bay",
-            access_result="Granted",
-        )
-    )
-    inject_event(
-        InjectEventRequest(
-            report_id="SPR-0001",
-            occurred_at="2026-04-18T06:10:56.350Z",
-            reporter="medical staff",
-            location="Emergency Department Ambulance Bay",
-            description="Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.",
-            verified="yes",
-            person_removed="yes",
-        )
-    )
-
-    case_groups = raw_event_store.list_case_groups()
-    assert len(case_groups) == 1
-    assert len(raw_event_store.list_case_group_event_ids(case_groups[0]["case_group_id"])) == 2
-
-
-def test_unrelated_raw_events_split_into_separate_case_clusters() -> None:
-    inject_event(
-        InjectEventRequest(
-            timestamp="2026-04-18T06:05:00.000Z",
-            staff_id="11",
-            door_name="Emergency Department Ambulance Bay",
-            area="Emergency Department Ambulance Bay",
-            access_result="Granted",
-        )
-    )
-    inject_event(
-        InjectEventRequest(
-            report_id="SPR-0099",
-            occurred_at="2026-04-18T08:15:00.000Z",
-            reporter="visitor",
-            location="Pharmacy Hallway",
-            description="Unknown person was seen opening supply cabinets near Pharmacy Hallway.",
-            verified="no",
-            person_removed="no",
-        )
-    )
-
-    case_groups = raw_event_store.list_case_groups()
-    assert len(case_groups) == 2

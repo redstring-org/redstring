@@ -10,6 +10,7 @@ from .raw_event_store import raw_event_store
 
 LOCATION_TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
 STOP_WORDS = {"the", "and", "for", "near", "with", "main", "service", "hospital"}
+QUALIFYING_EVENT_THRESHOLD = 3
 
 
 @dataclass(frozen=True)
@@ -61,6 +62,11 @@ class EvaluationEngine:
             event_row_id=event.row_id,
             event_timestamp=event.event_timestamp,
             anchor_location=event.location_hint,
+        )
+        raw_event_store.qualify_case_group(
+            case_group_id=matching_group_id,
+            min_event_count=QUALIFYING_EVENT_THRESHOLD,
+            qualified_at=event.event_timestamp,
         )
 
     def _find_matching_case_group(self, event: StoredEvent) -> str | None:

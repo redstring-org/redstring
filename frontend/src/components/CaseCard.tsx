@@ -1,4 +1,5 @@
 import type { ActiveCase } from "../types";
+import { PENDING_NEXT_ACTION } from "../demoContract";
 import { EvidenceList } from "./EvidenceList";
 import { Timeline } from "./Timeline";
 
@@ -22,11 +23,10 @@ export function CaseCard({ activeCase }: Props) {
       <div className="state-hero">
         <span className="state-badge">
           <span className="badge-dot" />
-          {activeCase.state ?? "Awaiting Trigger"}
+          {activeCase.state ?? "Awaiting Case Group"}
         </span>
         <p className={`next-action-text${hasAction ? "" : " idle"}`}>
-          {activeCase.next_human_check ||
-            "Awaiting qualifying cyber trigger from SOC or identity tooling."}
+          {activeCase.next_human_check || PENDING_NEXT_ACTION}
         </p>
       </div>
 

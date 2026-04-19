@@ -1,21 +1,6 @@
 report_id,occurred_at,reporter,location,description,verified,person_removed
-SPR-0001,2026-04-18T06:10:56.350Z,medical staff,Emergency Department Ambulance Bay,Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.,yes,yes
-SPR-0002,2026-04-18T06:51:56.350Z,security,Emergency Department Ambulance Bay,Visitor was reported watching shift change activity near Emergency Department Ambulance Bay and recording on a phone.,yes,no
-SPR-0003,2026-04-18T07:27:56.350Z,patient,Imaging Service Corridor,Visitor was reported watching shift change activity near Imaging Service Corridor and recording on a phone.,yes,yes
-SPR-0004,2026-04-18T07:57:56.350Z,visitor,Pharmacy Hallway,Unidentified person photographed badge readers and access panels near Pharmacy Hallway.,no,no
-SPR-0005,2026-04-18T08:34:56.350Z,medical staff,Labor and Delivery Waiting Area,Unknown person was seen moving a supply cart through Labor and Delivery Waiting Area and could not explain where it came from.,no,no
-SPR-0006,2026-04-18T09:09:56.350Z,custodial staff,Labor and Delivery Waiting Area,Individual without visible badge attempted to follow staff through a secured door near Labor and Delivery Waiting Area.,yes,no
-SPR-0007,2026-04-18T09:40:56.350Z,patient,Sterile Processing Corridor,Individual loitered near Sterile Processing Corridor and tried multiple locked doors before walking away.,yes,no
-SPR-0008,2026-04-18T10:22:56.350Z,visitor,Imaging Service Corridor,Individual without visible badge attempted to follow staff through a secured door near Imaging Service Corridor.,no,no
-SPR-0009,2026-04-18T11:00:56.350Z,custodial staff,Labor and Delivery Waiting Area,Visitor was reported watching shift change activity near Labor and Delivery Waiting Area and recording on a phone.,no,no
-SPR-0010,2026-04-18T11:33:56.350Z,custodial staff,Emergency Department Ambulance Bay,Individual without visible badge attempted to follow staff through a secured door near Emergency Department Ambulance Bay.,yes,yes
-SPR-0011,2026-04-18T12:06:56.350Z,custodial staff,Emergency Department Ambulance Bay,Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.,yes,no
-SPR-0012,2026-04-18T12:41:56.350Z,security,Main Lobby,Visitor was reported watching shift change activity near Main Lobby and recording on a phone.,yes,yes
-SPR-0013,2026-04-18T13:21:56.350Z,visitor,South Service Entrance,Unknown person was seen moving a supply cart through South Service Entrance and could not explain where it came from.,yes,yes
-SPR-0014,2026-04-18T13:55:56.350Z,security,Pharmacy Hallway,Unidentified person photographed badge readers and access panels near Pharmacy Hallway.,yes,no
-SPR-0015,2026-04-18T14:25:56.350Z,patient,Main Lobby,Person claiming to look for a relative entered a restricted hallway near Main Lobby without authorization.,yes,yes
-SPR-0016,2026-04-18T14:58:56.350Z,visitor,ICU Family Lounge,Person in mismatched scrubs observed pushing unattended equipment cases toward ICU Family Lounge.,yes,no
-SPR-0017,2026-04-18T15:32:56.350Z,custodial staff,South Service Entrance,Visitor was reported watching shift change activity near South Service Entrance and recording on a phone.,yes,no
-SPR-0018,2026-04-18T16:08:56.350Z,medical staff,Sterile Processing Corridor,Person without patient wristband entered Sterile Processing Corridor and attempted to open a staff equipment cabinet.,yes,no
-SPR-0019,2026-04-18T16:45:56.350Z,medical staff,Emergency Department Ambulance Bay,Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.,no,no
-SPR-0020,2026-04-18T17:27:56.350Z,patient,Sterile Processing Corridor,"Agitated individual paced near Sterile Processing Corridor, questioned staff about medications, and refused to leave the area.",yes,no
+SPR-0001,2026-04-18T06:05:54.156Z,medical staff,Emergency Department Ambulance Bay,Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.,yes,yes
+SPR-0002,2026-04-18T06:46:54.156Z,security,Emergency Department Ambulance Bay,Visitor was reported watching shift change activity near Emergency Department Ambulance Bay and recording on a phone.,yes,no
+SPR-0003,2026-04-18T07:22:54.156Z,patient,Imaging Service Corridor,Visitor was reported watching shift change activity near Imaging Service Corridor and recording on a phone.,yes,yes
+SPR-0004,2026-04-18T07:52:54.156Z,visitor,Pharmacy Hallway,Unidentified person photographed badge readers and access panels near Pharmacy Hallway.,no,no
+SPR-0005,2026-04-18T08:29:54.156Z,medical staff,Labor and Delivery Waiting Area,Unknown person was seen moving a supply cart through Labor and Delivery Waiting Area and could not explain where it came from.,no,no

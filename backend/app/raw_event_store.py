@@ -38,7 +38,9 @@ class RawEventStore:
                     case_group_id TEXT PRIMARY KEY,
                     anchor_location TEXT,
                     opened_at TEXT,
-                    updated_at TEXT
+                    updated_at TEXT,
+                    qualified_at TEXT,
+                    qualification_rank INTEGER
                 )
                 """
             )
@@ -54,6 +56,17 @@ class RawEventStore:
                 )
                 """
             )
+            self._ensure_case_group_columns(connection)
+
+    def _ensure_case_group_columns(self, connection: sqlite3.Connection) -> None:
+        columns = {
+            row[1]
+            for row in connection.execute("PRAGMA table_info(case_groups)").fetchall()
+        }
+        if "qualified_at" not in columns:
+            connection.execute("ALTER TABLE case_groups ADD COLUMN qualified_at TEXT")
+        if "qualification_rank" not in columns:
+            connection.execute("ALTER TABLE case_groups ADD COLUMN qualification_rank INTEGER")
 
     def save(self, payload: dict[str, Any]) -> int:
         normalized_payload = dict(payload)
@@ -129,8 +142,15 @@ class RawEventStore:
         with self._connect() as connection:
             connection.execute(
                 """
-                INSERT INTO case_groups (case_group_id, anchor_location, opened_at, updated_at)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO case_groups (
+                    case_group_id,
+                    anchor_location,
+                    opened_at,
+                    updated_at,
+                    qualified_at,
+                    qualification_rank
+                )
+                VALUES (?, ?, ?, ?, NULL, NULL)
                 """,
                 (case_group_id, anchor_location or None, anchor_timestamp, anchor_timestamp),
             )
@@ -165,11 +185,55 @@ class RawEventStore:
                 (event_timestamp, anchor_location or None, case_group_id),
             )
 
+    def qualify_case_group(
+        self,
+        *,
+        case_group_id: str,
+        min_event_count: int,
+        qualified_at: str | None = None,
+    ) -> bool:
+        with self._connect() as connection:
+            count_row = connection.execute(
+                """
+                SELECT COUNT(*)
+                FROM case_group_events
+                WHERE case_group_id = ?
+                """,
+                (case_group_id,),
+            ).fetchone()
+            current_row = connection.execute(
+                """
+                SELECT qualified_at
+                FROM case_groups
+                WHERE case_group_id = ?
+                """,
+                (case_group_id,),
+            ).fetchone()
+            event_count = int(count_row[0]) if count_row else 0
+            if event_count < min_event_count or not current_row or current_row[0] is not None:
+                return False
+
+            rank_row = connection.execute(
+                "SELECT COALESCE(MAX(qualification_rank), 0) + 1 FROM case_groups"
+            ).fetchone()
+            qualification_rank = int(rank_row[0]) if rank_row else 1
+            cursor = connection.execute(
+                """
+                UPDATE case_groups
+                SET qualified_at = COALESCE(?, CURRENT_TIMESTAMP),
+                    qualification_rank = ?
+                WHERE case_group_id = ?
+                  AND qualified_at IS NULL
+                """,
+                (qualified_at, qualification_rank, case_group_id),
+            )
+            return cursor.rowcount > 0
+
     def list_case_groups(self) -> list[dict[str, Any]]:
         with self._connect() as connection:
             rows = connection.execute(
                 """
-                SELECT case_group_id, anchor_location, opened_at, updated_at
+                SELECT case_group_id, anchor_location, opened_at, updated_at, qualified_at, qualification_rank
                 FROM case_groups
                 ORDER BY COALESCE(updated_at, opened_at) DESC, case_group_id DESC
                 """
@@ -180,9 +244,33 @@ class RawEventStore:
                 "anchor_location": row[1] or "",
                 "opened_at": row[2],
                 "updated_at": row[3],
+                "qualified_at": row[4],
+                "qualification_rank": row[5],
             }
             for row in rows
         ]
+
+    def get_first_qualified_case_group(self) -> dict[str, Any] | None:
+        with self._connect() as connection:
+            row = connection.execute(
+                """
+                SELECT case_group_id, anchor_location, opened_at, updated_at, qualified_at, qualification_rank
+                FROM case_groups
+                WHERE qualified_at IS NOT NULL
+                ORDER BY qualification_rank ASC, case_group_id ASC
+                LIMIT 1
+                """
+            ).fetchone()
+        if not row:
+            return None
+        return {
+            "case_group_id": row[0],
+            "anchor_location": row[1] or "",
+            "opened_at": row[2],
+            "updated_at": row[3],
+            "qualified_at": row[4],
+            "qualification_rank": row[5],
+        }
 
     def list_case_group_event_ids(self, case_group_id: str) -> list[int]:
         with self._connect() as connection:
@@ -196,6 +284,30 @@ class RawEventStore:
                 (case_group_id,),
             ).fetchall()
         return [int(row[0]) for row in rows]
+
+    def list_case_group_events(self, case_group_id: str) -> list[dict[str, Any]]:
+        with self._connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT ie.id, ie.payload_kind, ie.external_id, ie.event_timestamp, ie.payload_json, ie.created_at
+                FROM case_group_events cge
+                JOIN injected_events ie ON ie.id = cge.event_row_id
+                WHERE cge.case_group_id = ?
+                ORDER BY ie.id ASC
+                """,
+                (case_group_id,),
+            ).fetchall()
+        return [
+            {
+                "id": row[0],
+                "payload_kind": row[1],
+                "external_id": row[2],
+                "event_timestamp": row[3] or row[5],
+                "payload": json.loads(row[4]),
+                "created_at": row[5],
+            }
+            for row in rows
+        ]
 
     def list_recent_events(self, *, per_kind: int = 40) -> dict[str, Any]:
         with self._connect() as connection:

@@ -150,6 +150,13 @@ button:disabled { opacity: 0.35; cursor: not-allowed; }
   min-width: 0;
 }
 
+.presenter-note {
+  margin-bottom: 0.75rem;
+  color: var(--text-sub);
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
 /* ── Case card ───────────────────────────── */
 
 .case-card {

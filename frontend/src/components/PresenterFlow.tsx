@@ -9,11 +9,16 @@ type Props = {
 };
 
 export function PresenterFlow({ activeCase, busy, onAdvance, onReset }: Props) {
-  const done = activeCase.timeline.length;
+  const done = PRESENTER_STEPS.filter((step) =>
+    activeCase.timeline.some((item) => item.event_id === step.eventId)
+  ).length;
   const next = PRESENTER_STEPS[done];
 
   return (
     <aside className="presenter-controls" aria-label="Presenter controls">
+      <p className="presenter-note">
+        Legacy presenter flow: manual demo-event injection only. The active case now opens from qualified live case groups.
+      </p>
       <ol className="presenter-steps">
         {PRESENTER_STEPS.map((step, i) => {
           const status = i < done ? "complete" : i === done ? "ready" : "locked";

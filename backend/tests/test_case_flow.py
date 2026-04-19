@@ -1,144 +1,140 @@
 from __future__ import annotations
 
-from copy import deepcopy
-
-from app.domain.case_engine import build_test_engine, engine
-from app.fixtures.loader import load_gold_events, load_reference_data
-
-
-def _test_engine():
-    return build_test_engine(reference=load_reference_data(), events=load_gold_events())
+from app.domain.case_engine import engine
+from app.event_signal import raw_event_received
+from app.raw_event_store import raw_event_store
 
 
-def test_case_shell_before_injection() -> None:
-    case = engine.build_case([])
+def setup_function() -> None:
+    raw_event_store.reset()
+
+
+def _save(payload: dict[str, str]) -> None:
+    row_id = raw_event_store.save(payload)
+    raw_event_received.emit(row_id)
+
+
+def test_case_shell_before_any_group_qualifies() -> None:
+    case = engine.build_active_case()
+
     assert case.state is None
     assert case.timeline == []
     assert case.why_linked == []
     assert case.escalation_recommendation is None
 
 
-def test_observe_after_cyber_trigger() -> None:
-    case = engine.build_case(["CY-0213-001"])
-    assert case.state == "Observe"
-    assert case.next_human_check == (
-        "Call the SOC now to confirm whether the active VPN session for jmercer@vendorco is still live "
-        "and whether the MFA approval was legitimate."
+def test_qualified_group_builds_observe_case() -> None:
+    _save(
+        {
+            "timestamp": "2026-04-18T06:05:00.000Z",
+            "staff_id": "11",
+            "first_name": "Taylor",
+            "last_name": "Davis",
+            "door_name": "Emergency Department Ambulance Bay",
+            "area": "Emergency Department Ambulance Bay",
+            "access_result": "Granted",
+        }
     )
-    assert case.escalation_recommendation is None
-    assert case.why_linked == [
-        "Unexpected device login succeeded on vendor contractor account",
-        "Active VPN session remains live",
-    ]
-    assert case.what_weakens_it == [
-        "No linked on-campus evidence yet",
-        "Remote session legitimacy not yet confirmed",
-    ]
-
-
-def test_verify_now_after_badge_event() -> None:
-    case = engine.build_case(["CY-0213-001", "AC-0224-001"])
-    assert case.state == "Verify Now"
-    assert case.next_human_check == (
-        "Call the VendorCo night supervisor now to confirm whether John Mercer is scheduled onsite "
-        "and carrying badge B-1842."
+    _save(
+        {
+            "report_id": "SPR-0001",
+            "occurred_at": "2026-04-18T06:10:56.350Z",
+            "location": "Emergency Department Ambulance Bay",
+            "description": "Person in mismatched scrubs observed pushing unattended equipment cases.",
+        }
     )
-    assert case.escalation_recommendation is None
-    assert case.why_linked[-2:] == [
-        "Badge B-1842 maps to John Mercer",
-        "After-hours badge use at South Service Entrance SE-3",
-    ]
-
-
-def test_escalate_now_after_officer_report() -> None:
-    case = engine.build_case(["CY-0213-001", "AC-0224-001", "IR-0231-001"])
-    assert case.state == "Escalate Now"
-    assert case.next_human_check == (
-        "Dispatch an officer to Imaging Service Corridor now to identify the person reported near Door SE-3."
+    _save(
+        {
+            "post_id": "POST-0001",
+            "posted_at": "2026-04-18T06:12:00.000Z",
+            "screen_name": "citywatch",
+            "location": "Emergency Department Ambulance Bay",
+            "text": "Unusual overnight equipment movement reported outside the ambulance bay.",
+        }
     )
-    assert case.escalation_recommendation == "Notify protective services leadership and SOC now."
-    assert case.why_linked[-2:] == [
-        "Officer report in adjacent Imaging Service Corridor within seven minutes",
-        "No escort observed",
-    ]
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001", "AC-0224-001", "IR-0231-001"]
 
-
-def test_report_without_badge_does_not_escalate() -> None:
-    case = engine.build_case(["CY-0213-001", "IR-0231-001"])
-    assert case.state == "Observe"
-    assert case.escalation_recommendation is None
-
-
-def test_identity_mismatch_blocks_verify_now() -> None:
-    reference = deepcopy(load_reference_data())
-    reference["identity_record"]["account"] = "other@vendorco"
-    test_engine = build_test_engine(reference=reference, events=load_gold_events())
-
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001"])
+    case = engine.build_active_case()
 
     assert case.state == "Observe"
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001"]
+    assert case.location == "Emergency Department Ambulance Bay"
+    assert case.primary_subject == "Taylor Davis"
+    assert [item.source for item in case.provenance] == ["Badge Access", "Officer Report", "citywatch"]
 
 
-def test_badge_mapping_mismatch_blocks_verify_now() -> None:
-    reference = deepcopy(load_reference_data())
-    reference["badge_mapping"]["person_id"] = "P-9999"
-    test_engine = build_test_engine(reference=reference, events=load_gold_events())
+def test_first_group_to_qualify_remains_active() -> None:
+    _save(
+        {
+            "timestamp": "2026-04-18T06:05:00.000Z",
+            "staff_id": "11",
+            "area": "Emergency Department Ambulance Bay",
+        }
+    )
+    _save(
+        {
+            "report_id": "SPR-0001",
+            "occurred_at": "2026-04-18T06:10:56.350Z",
+            "location": "Emergency Department Ambulance Bay",
+            "description": "Observed equipment movement.",
+        }
+    )
+    _save(
+        {
+            "post_id": "POST-0001",
+            "posted_at": "2026-04-18T06:12:00.000Z",
+            "location": "Emergency Department Ambulance Bay",
+            "text": "Ambulance bay activity noted.",
+        }
+    )
+    first_group = raw_event_store.get_first_qualified_case_group()
 
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001"])
+    _save(
+        {
+            "timestamp": "2026-04-18T08:15:00.000Z",
+            "staff_id": "77",
+            "area": "Pharmacy Hallway",
+        }
+    )
+    _save(
+        {
+            "report_id": "SPR-0099",
+            "occurred_at": "2026-04-18T08:16:00.000Z",
+            "location": "Pharmacy Hallway",
+            "description": "Unknown person was seen opening supply cabinets.",
+        }
+    )
+    _save(
+        {
+            "post_id": "POST-0099",
+            "posted_at": "2026-04-18T08:17:00.000Z",
+            "location": "Pharmacy Hallway",
+            "text": "Late-night pharmacy activity reported.",
+        }
+    )
 
-    assert case.state == "Observe"
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001"]
+    case = engine.build_active_case()
 
-
-def test_door_mapping_mismatch_blocks_verify_now() -> None:
-    reference = deepcopy(load_reference_data())
-    reference["door_mapping"]["door_id"] = "SE-9"
-    test_engine = build_test_engine(reference=reference, events=load_gold_events())
-
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001"])
-
-    assert case.state == "Observe"
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001"]
-
-
-def test_badge_event_outside_30_minute_window_blocks_verify_now() -> None:
-    events = deepcopy(load_gold_events())
-    events["AC-0224-001"]["occurred_at"] = "2026-04-18T02:44:00-04:00"
-    test_engine = build_test_engine(reference=load_reference_data(), events=events)
-
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001"])
-
-    assert case.state == "Observe"
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001"]
-
-
-def test_report_outside_15_minute_window_blocks_escalate_now() -> None:
-    events = deepcopy(load_gold_events())
-    events["IR-0231-001"]["occurred_at"] = "2026-04-18T02:40:00-04:00"
-    test_engine = build_test_engine(reference=load_reference_data(), events=events)
-
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001", "IR-0231-001"])
-
-    assert case.state == "Verify Now"
-    assert case.escalation_recommendation is None
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001", "AC-0224-001"]
+    assert first_group is not None
+    assert case.case_id == first_group["case_group_id"]
+    assert case.location == "Emergency Department Ambulance Bay"
 
 
-def test_same_zone_report_is_accepted_for_escalation() -> None:
-    events = deepcopy(load_gold_events())
-    reference = deepcopy(load_reference_data())
-    events["IR-0231-001"]["zone_id"] = reference["door_mapping"]["zone_id"]
-    test_engine = build_test_engine(reference=reference, events=events)
+def test_group_does_not_qualify_before_three_events() -> None:
+    _save(
+        {
+            "timestamp": "2026-04-18T06:05:00.000Z",
+            "staff_id": "11",
+            "area": "Emergency Department Ambulance Bay",
+        }
+    )
+    _save(
+        {
+            "report_id": "SPR-0001",
+            "occurred_at": "2026-04-18T06:10:56.350Z",
+            "location": "Emergency Department Ambulance Bay",
+            "description": "Observed equipment movement.",
+        }
+    )
 
-    case = test_engine.build_case(["CY-0213-001", "AC-0224-001", "IR-0231-001"])
-
-    assert case.state == "Escalate Now"
-    assert case.escalation_recommendation == "Notify protective services leadership and SOC now."
-
-
-def test_duplicate_injections_do_not_duplicate_timeline_items() -> None:
-    case = engine.build_case(["CY-0213-001", "CY-0213-001", "AC-0224-001", "IR-0231-001", "IR-0231-001"])
-
-    assert [item.event_id for item in case.timeline] == ["CY-0213-001", "AC-0224-001", "IR-0231-001"]
+    case = engine.build_active_case()
+    assert case.state is None
+    assert raw_event_store.get_first_qualified_case_group() is None

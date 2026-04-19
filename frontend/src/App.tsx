@@ -26,18 +26,46 @@ export default function App() {
 
   useEffect(() => {
     if (!routeReady) return;
-    fetchActiveCase()
-      .then(setActiveCase)
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setBusy(false));
+    let cancelled = false;
+    const applyLive = (r: LiveEventsResponse) => {
+      if (cancelled) return;
+      setLiveEvents(r.events);
+      setTotalEvents(r.total);
+    };
+    const syncActiveCase = async (showBusy: boolean) => {
+      if (showBusy) setBusy(true);
+      try {
+        const active = await fetchActiveCase();
+        if (!cancelled) {
+          setActiveCase(active);
+          setError(null);
+        }
+      } catch (err) {
+        if (!cancelled) setError((err as Error).message);
+      } finally {
+        if (showBusy && !cancelled) setBusy(false);
+      }
+    };
+    const syncLiveEvents = async () => {
+      try {
+        applyLive(await fetchLiveEvents());
+      } catch {
+        // Keep the existing feed visible if a poll fails.
+      }
+    };
+    const sync = async (showBusy: boolean) => {
+      await Promise.all([syncActiveCase(showBusy), syncLiveEvents()]);
+    };
 
-    const applyLive = (r: LiveEventsResponse) => { setLiveEvents(r.events); setTotalEvents(r.total); };
-    fetchLiveEvents().then(applyLive).catch(() => {});
+    void sync(true);
 
     const interval = setInterval(() => {
-      fetchLiveEvents().then(applyLive).catch(() => {});
+      void sync(false);
     }, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, [routeReady]);
 
   async function handleInject(eventId: string) {

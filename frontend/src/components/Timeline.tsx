@@ -37,7 +37,7 @@ export function Timeline({ items }: Props) {
     <div>
       <p className="eyebrow">Timeline</p>
       {items.length === 0 ? (
-        <p className="placeholder">Awaiting the qualifying cyber trigger.</p>
+        <p className="placeholder">Awaiting the first qualified correlated case group.</p>
       ) : (
         <ol className="timeline-list">
           {items.map((item) => {

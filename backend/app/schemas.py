@@ -49,6 +49,22 @@ class LiveEventsResponse(BaseModel):
     events: list["LiveEventResponse"]
 
 
+class CaseGroupResponse(BaseModel):
+    case_group_id: str
+    anchor_location: str
+    opened_at: Optional[str]
+    updated_at: Optional[str]
+    qualified_at: Optional[str]
+    qualification_rank: Optional[int]
+    event_row_ids: list[int]
+    event_count: int
+
+
+class CaseGroupsResponse(BaseModel):
+    total: int
+    case_groups: list["CaseGroupResponse"]
+
+
 class TimelineItem(BaseModel):
     event_id: str
     timestamp: str

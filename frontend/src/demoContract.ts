@@ -1,6 +1,9 @@
 import type { ActiveCase } from "./types";
 
 export const ACTIVE_CASE_ROUTE = "/case/active";
+export const PENDING_CASE_TITLE = "Awaiting qualified correlated case group";
+export const PENDING_TRIGGER_SUMMARY = "No case group has reached the minimum threshold of 3 linked events yet.";
+export const PENDING_NEXT_ACTION = "Awaiting the first qualified case group from linked live events.";
 
 export const CASE_TITLE = "VendorCo contractor remote-access anomaly with potential on-campus linkage";
 export const CASE_LOCATION = "South Service Entrance SE-3 / Imaging Service Corridor";
@@ -23,12 +26,12 @@ export const NEXT_CHECK_3 =
 export const ESCALATION_RECOMMENDATION = "Notify protective services leadership and SOC now.";
 
 export const EMPTY_ACTIVE_CASE: ActiveCase = {
-  case_id: "CASE-GOLD-001",
-  case_title: CASE_TITLE,
-  location: CASE_LOCATION,
+  case_id: "CASE-GROUP-PENDING",
+  case_title: PENDING_CASE_TITLE,
+  location: "",
   state: null,
-  primary_subject: CASE_PRIMARY_SUBJECT,
-  trigger_summary: CASE_TRIGGER_SUMMARY,
+  primary_subject: "Unknown subject",
+  trigger_summary: PENDING_TRIGGER_SUMMARY,
   timeline: [],
   why_linked: [],
   what_weakens_it: [],
