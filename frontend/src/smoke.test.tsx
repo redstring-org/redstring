@@ -2,27 +2,58 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "./App";
 import { CaseCard } from "./components/CaseCard";
+import { PresenterFlow } from "./components/PresenterFlow";
+import {
+  ACTIVE_CASE_ROUTE,
+  CASE_LOCATION,
+  CASE_PRIMARY_SUBJECT,
+  CASE_TITLE,
+  CASE_TRIGGER_SUMMARY,
+  ESCALATION_RECOMMENDATION,
+  EVENT_1,
+  EVENT_2,
+  EVENT_3,
+  NEXT_CHECK_1,
+  NEXT_CHECK_2,
+  NEXT_CHECK_3
+} from "./demoContract";
 import type { ActiveCase } from "./types";
+
+const emptyCase: ActiveCase = {
+  case_id: "CASE-GOLD-001",
+  case_title: CASE_TITLE,
+  location: CASE_LOCATION,
+  state: null,
+  primary_subject: CASE_PRIMARY_SUBJECT,
+  trigger_summary: CASE_TRIGGER_SUMMARY,
+  timeline: [],
+  why_linked: [],
+  what_weakens_it: [],
+  next_human_check: "",
+  escalation_recommendation: null,
+  provenance: [],
+  osint_enabled: false
+};
 
 const sampleCase: ActiveCase = {
   case_id: "CASE-GOLD-001",
-  case_title: "VendorCo contractor remote-access anomaly with potential on-campus linkage",
-  location: "South Service Entrance SE-3 / Imaging Service Corridor",
+  case_title: CASE_TITLE,
+  location: CASE_LOCATION,
   state: "Escalate Now",
-  primary_subject: "John Mercer (VendorCo biomedical contractor)",
-  trigger_summary: "Successful VPN login from a new device while the remote session remains active.",
+  primary_subject: CASE_PRIMARY_SUBJECT,
+  trigger_summary: CASE_TRIGGER_SUMMARY,
   timeline: [
     {
       event_id: "CY-0213-001",
       timestamp: "2026-04-18T02:13:00-04:00",
-      summary: "02:13 AM - jmercer@vendorco successful VPN login from a new device while the remote session remains active.",
+      summary: EVENT_1,
       source: "identity_risk_engine"
     }
   ],
   why_linked: ["Unexpected device login succeeded on vendor contractor account"],
   what_weakens_it: ["Contractor schedule not yet confirmed"],
-  next_human_check: "Dispatch an officer to Imaging Service Corridor now to identify the person reported near Door SE-3.",
-  escalation_recommendation: "Notify protective services leadership and SOC now.",
+  next_human_check: NEXT_CHECK_3,
+  escalation_recommendation: ESCALATION_RECOMMENDATION,
   provenance: [
     {
       event_id: "CY-0213-001",

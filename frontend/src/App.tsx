@@ -22,6 +22,14 @@ export const emptyCase: ActiveCase = {
 export default function App() {
   const [activeCase, setActiveCase] = useState<ActiveCase>(emptyCase);
   const [error, setError] = useState<string | null>(null);
+  const [routeReady, setRouteReady] = useState(false);
+
+  useEffect(() => {
+    if (window.location.pathname !== ACTIVE_CASE_ROUTE) {
+      window.history.replaceState({}, "", ACTIVE_CASE_ROUTE);
+    }
+    setRouteReady(true);
+  }, []);
 
   useEffect(() => {
     fetchActiveCase().then(setActiveCase).catch((requestError: Error) => setError(requestError.message));
@@ -29,10 +37,15 @@ export default function App() {
 
   return (
     <main className="app-shell">
+      <RedStringCanvas />
+      <header className="app-header">
+        <span className="app-wordmark">RedString</span>
+        <span className="app-live-badge">Live Case</span>
+      </header>
       <section className="stage">
         <CaseCard activeCase={activeCase} />
       </section>
-      {error ? <p className="error-banner">{error}</p> : null}
+      {error && <p className="error-banner">{error}</p>}
     </main>
   );
 }
