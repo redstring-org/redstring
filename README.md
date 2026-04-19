@@ -2,6 +2,8 @@
 
 Deterministic MVP for the Cyber-Physical Correlation Engine.
 
+**When everyone else sees noise, RedString sees patterns**
+
 ## Start Here
 
 Read these files first and treat them as binding:
