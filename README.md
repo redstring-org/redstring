@@ -1,8 +1,8 @@
 # RedString
+**When everyone else sees noise, RedString sees patterns**
 
 Deterministic MVP for the Cyber-Physical Correlation Engine.
 
-**When everyone else sees noise, RedString sees patterns**
 
 ## Start Here
 
