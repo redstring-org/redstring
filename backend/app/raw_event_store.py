@@ -197,22 +197,29 @@ class RawEventStore:
             ).fetchall()
         return [int(row[0]) for row in rows]
 
-    def list_recent_events(self, *, limit: int = 100) -> dict[str, Any]:
+    def list_recent_events(self, *, per_kind: int = 40) -> dict[str, Any]:
         with self._connect() as connection:
             total_row = connection.execute(
                 "SELECT COUNT(*) FROM injected_events WHERE payload_kind != 'demo_event_id'"
             ).fetchone()
             total = int(total_row[0]) if total_row else 0
-            rows = connection.execute(
-                """
-                SELECT id, payload_kind, external_id, event_timestamp, payload_json, created_at
-                FROM injected_events
-                WHERE payload_kind != 'demo_event_id'
-                ORDER BY id DESC
-                LIMIT ?
-                """,
-                (limit,),
-            ).fetchall()
+
+            kinds = ["badge_access", "suspicious_person_report", "osint_post", "raw_event"]
+            all_rows: list[tuple] = []
+            for kind in kinds:
+                rows = connection.execute(
+                    """
+                    SELECT id, payload_kind, external_id, event_timestamp, payload_json, created_at
+                    FROM injected_events
+                    WHERE payload_kind = ?
+                    ORDER BY id DESC
+                    LIMIT ?
+                    """,
+                    (kind, per_kind),
+                ).fetchall()
+                all_rows.extend(rows)
+
+        all_rows.sort(key=lambda r: r[0])
         events = [
             {
                 "id": row[0],
@@ -221,7 +228,7 @@ class RawEventStore:
                 "timestamp": row[3] or row[5],
                 "payload": json.loads(row[4]),
             }
-            for row in reversed(rows)
+            for row in all_rows
         ]
         return {"total": total, "events": events}
 

@@ -51,8 +51,8 @@ def reset_demo() -> ActiveCaseResponse:
 
 
 @router.get("/events/live", response_model=LiveEventsResponse)
-def get_live_events(limit: int = 100) -> LiveEventsResponse:
-    result = raw_event_store.list_recent_events(limit=limit)
+def get_live_events() -> LiveEventsResponse:
+    result = raw_event_store.list_recent_events()
     return LiveEventsResponse(
         total=result["total"],
         events=[LiveEventResponse.from_raw(row) for row in result["events"]],
