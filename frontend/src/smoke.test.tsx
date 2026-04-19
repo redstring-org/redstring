@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import App from "./App";
 import { CaseCard } from "./components/CaseCard";
 import type { ActiveCase } from "./types";
 
@@ -33,11 +34,46 @@ const sampleCase: ActiveCase = {
   osint_enabled: false
 };
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe("CaseCard", () => {
-  it("renders the primary case content", () => {
+  it("renders the locked visible sections", () => {
     render(<CaseCard activeCase={sampleCase} />);
+
+    expect(screen.getByText("VendorCo contractor remote-access anomaly with potential on-campus linkage")).toBeTruthy();
+    expect(screen.getByText("South Service Entrance SE-3 / Imaging Service Corridor")).toBeTruthy();
     expect(screen.getByText("Escalate Now")).toBeTruthy();
-    expect(screen.getByText("Notify protective services leadership and SOC now.")).toBeTruthy();
     expect(screen.getByText("John Mercer (VendorCo biomedical contractor)")).toBeTruthy();
+    expect(screen.getByText("Trigger Summary")).toBeTruthy();
+    expect(screen.getByText("Next Human Check")).toBeTruthy();
+    expect(screen.getByText("Timeline")).toBeTruthy();
+    expect(screen.getByText("Why Linked")).toBeTruthy();
+    expect(screen.getByText("What Weakens It")).toBeTruthy();
+    expect(screen.getByText("Provenance")).toBeTruthy();
+    expect(screen.getByText("Escalation Recommendation")).toBeTruthy();
+    expect(screen.getByText("Notify protective services leadership and SOC now.")).toBeTruthy();
+  });
+});
+
+describe("App", () => {
+  it("opens on the active case card without demo controls", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => sampleCase
+      })
+    );
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText("VendorCo contractor remote-access anomaly with potential on-campus linkage")).toBeTruthy();
+    });
+
+    expect(screen.queryByText("Demo Controls")).toBeNull();
+    expect(screen.queryByText("Inject CY-0213-001")).toBeNull();
   });
 });

@@ -17,7 +17,7 @@ export function CaseCard({ activeCase }: CaseCardProps) {
         </div>
         <div className="state-stack">
           <span className={`state-badge ${activeCase.state ? "state-live" : "state-empty"}`}>
-            {activeCase.state ?? "State Pending"}
+            {activeCase.state ?? "Awaiting Trigger"}
           </span>
           <span className="subject-chip">{activeCase.primary_subject}</span>
         </div>
@@ -38,11 +38,7 @@ export function CaseCard({ activeCase }: CaseCardProps) {
 
       <div className="panel-grid">
         <Timeline items={activeCase.timeline} />
-        <EvidenceList
-          title="Why Linked"
-          items={activeCase.why_linked}
-          emptyText="No linked evidence yet."
-        />
+        <EvidenceList title="Why Linked" items={activeCase.why_linked} emptyText="No linked evidence yet." />
         <EvidenceList
           title="What Weakens It"
           items={activeCase.what_weakens_it}

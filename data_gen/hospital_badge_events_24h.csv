@@ -1,0 +1,5 @@
+timestamp,staff_id,first_name,last_name,role_title,role_category,department,shift,door_name,category,area,door_type,badge_required,action,access_result
+2026-04-18T07:45:00.000+00:00Z,11,Taylor,Davis,Registered Nurse,Clinical staff,Laboratory,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:45:00.000+00:00Z,150,Bailey,Williams,Anesthesiologist,Specialized roles,Infection Control,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:45:00.000+00:00Z,335,Neil,Perez,Radiologic Technologist,Clinical staff,Surgical,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:45:00.000+00:00Z,469,Skyler,Williams,Pharmacist,Specialized roles,Anesthesia,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted

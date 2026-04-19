@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class TimelineItem(BaseModel):
@@ -36,4 +36,24 @@ class ActiveCaseResponse(BaseModel):
 
 
 class InjectEventRequest(BaseModel):
-    event_id: str
+    model_config = ConfigDict(extra="allow")
+
+    event_id: Optional[str] = None
+    timestamp: Optional[str] = None
+    staff_id: Optional[int | str] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    role_title: Optional[str] = None
+    role_category: Optional[str] = None
+    department: Optional[str] = None
+    shift: Optional[str] = None
+    door_name: Optional[str] = None
+    category: Optional[str] = None
+    area: Optional[str] = None
+    door_type: Optional[str] = None
+    badge_required: Optional[str] = None
+    action: Optional[str] = None
+    access_result: Optional[str] = None
+
+    def raw_payload(self) -> dict[str, Any]:
+        return self.model_dump(exclude_none=True, exclude={"event_id"})
