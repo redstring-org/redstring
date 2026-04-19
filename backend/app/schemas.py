@@ -5,6 +5,50 @@ from typing import Any, Optional
 from pydantic import BaseModel, ConfigDict
 
 
+class LiveEventResponse(BaseModel):
+    id: int
+    kind: str
+    timestamp: Optional[str]
+    summary: str
+    source: str
+
+    @classmethod
+    def from_raw(cls, row: dict[str, Any]) -> "LiveEventResponse":
+        p = row["payload"]
+        kind = row["kind"]
+
+        if kind == "badge_access":
+            name = f"{p.get('first_name', '')} {p.get('last_name', '')}".strip() or p.get("staff_id", "unknown")
+            door = p.get("door_name", p.get("area", "unknown door"))
+            result = p.get("access_result", "")
+            summary = f"{name} — {door}" + (f" ({result})" if result else "")
+            source = "Badge Access"
+        elif kind == "suspicious_person_report":
+            desc = p.get("description", "")
+            loc = p.get("location", "")
+            summary = f"{loc}: {desc}" if loc else desc
+            source = "Officer Report"
+        elif kind == "osint_post":
+            summary = p.get("text", p.get("content", ""))[:120]
+            source = p.get("username", "OSINT")
+        else:
+            summary = str(p)[:120]
+            source = kind
+
+        return cls(
+            id=row["id"],
+            kind=kind,
+            timestamp=row.get("timestamp"),
+            summary=summary,
+            source=source,
+        )
+
+
+class LiveEventsResponse(BaseModel):
+    total: int
+    events: list["LiveEventResponse"]
+
+
 class TimelineItem(BaseModel):
     event_id: str
     timestamp: str

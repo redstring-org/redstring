@@ -45,6 +45,11 @@ def parse_args() -> argparse.Namespace:
         default=5.0,
         help="Delay between POSTs in seconds. Default: 5",
     )
+    parser.add_argument(
+        "--loop",
+        action="store_true",
+        help="Loop the CSV indefinitely (Ctrl-C to stop).",
+    )
     return parser.parse_args()
 
 
@@ -129,6 +134,24 @@ def main() -> int:
     if not rows:
         print(f"Error: No rows found in {csv_path}", file=sys.stderr)
         return 1
+
+    if args.loop:
+        print("Looping indefinitely — Ctrl-C to stop.")
+        iteration = 0
+        try:
+            while True:
+                iteration += 1
+                print(f"--- Loop {iteration} ---")
+                upload_rows(
+                    rows=rows,
+                    endpoint=args.endpoint,
+                    timeout_seconds=args.timeout_seconds,
+                    stop_on_error=False,
+                    interval_seconds=max(args.interval_seconds, 0.0),
+                )
+        except KeyboardInterrupt:
+            print("\nStopped.")
+        return 0
 
     return upload_rows(
         rows=rows,

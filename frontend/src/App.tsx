@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react";
-import { fetchActiveCase } from "./api";
+import { fetchActiveCase, fetchLiveEvents, injectEvent, resetDemo } from "./api";
 import { CaseCard } from "./components/CaseCard";
-import type { ActiveCase } from "./types";
+import { LiveFeed } from "./components/LiveFeed";
+import { PresenterFlow } from "./components/PresenterFlow";
+import { RedStringCanvas } from "./components/RedStringCanvas";
+import { ACTIVE_CASE_ROUTE, EMPTY_ACTIVE_CASE, PRESENTER_STEPS } from "./demoContract";
+import type { ActiveCase, LiveEvent, LiveEventsResponse } from "./types";
 
-export const emptyCase: ActiveCase = {
-  case_id: "CASE-GOLD-001",
-  case_title: "VendorCo contractor remote-access anomaly with potential on-campus linkage",
-  location: "South Service Entrance SE-3 / Imaging Service Corridor",
-  state: null,
-  primary_subject: "John Mercer (VendorCo biomedical contractor)",
-  trigger_summary: "Successful VPN login from a new device while the remote session remains active.",
-  timeline: [],
-  why_linked: [],
-  what_weakens_it: [],
-  next_human_check: "",
-  escalation_recommendation: null,
-  provenance: [],
-  osint_enabled: false
-};
+const POLL_INTERVAL_MS = 3000;
 
 export default function App() {
-  const [activeCase, setActiveCase] = useState<ActiveCase>(emptyCase);
+  const [activeCase, setActiveCase] = useState<ActiveCase>(EMPTY_ACTIVE_CASE);
+  const [liveEvents, setLiveEvents] = useState<LiveEvent[]>([]);
+  const [totalEvents, setTotalEvents] = useState(0);
+  const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [routeReady, setRouteReady] = useState(false);
 
@@ -32,8 +25,51 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetchActiveCase().then(setActiveCase).catch((requestError: Error) => setError(requestError.message));
-  }, []);
+    if (!routeReady) return;
+    fetchActiveCase()
+      .then(setActiveCase)
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setBusy(false));
+
+    const applyLive = (r: LiveEventsResponse) => { setLiveEvents(r.events); setTotalEvents(r.total); };
+    fetchLiveEvents().then(applyLive).catch(() => {});
+
+    const interval = setInterval(() => {
+      fetchLiveEvents().then(applyLive).catch(() => {});
+    }, POLL_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [routeReady]);
+
+  async function handleInject(eventId: string) {
+    setBusy(true);
+    setError(null);
+    try {
+      setActiveCase(await injectEvent(eventId));
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleReset() {
+    setBusy(true);
+    setError(null);
+    try {
+      setActiveCase(await resetDemo());
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleAdvance() {
+    const next = PRESENTER_STEPS[activeCase.timeline.length];
+    if (next) await handleInject(next.eventId);
+  }
+
+  if (!routeReady) return null;
 
   return (
     <main className="app-shell">
@@ -42,9 +78,18 @@ export default function App() {
         <span className="app-wordmark">RedString</span>
         <span className="app-live-badge">Live Case</span>
       </header>
-      <section className="stage">
-        <CaseCard activeCase={activeCase} />
-      </section>
+      <div className="app-body">
+        <section className="stage">
+          <CaseCard activeCase={activeCase} />
+          <PresenterFlow
+            activeCase={activeCase}
+            busy={busy}
+            onAdvance={handleAdvance}
+            onReset={handleReset}
+          />
+        </section>
+        <LiveFeed events={liveEvents} total={totalEvents} />
+      </div>
       {error && <p className="error-banner">{error}</p>}
     </main>
   );

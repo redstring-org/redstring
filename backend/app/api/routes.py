@@ -6,7 +6,7 @@ from .. import evaluation_engine  # noqa: F401
 from ..domain.case_engine import engine
 from ..event_signal import raw_event_received
 from ..raw_event_store import raw_event_store
-from ..schemas import ActiveCaseResponse, InjectEventRequest
+from ..schemas import ActiveCaseResponse, InjectEventRequest, LiveEventResponse, LiveEventsResponse
 from ..state_store import store
 
 
@@ -48,3 +48,12 @@ def reset_demo() -> ActiveCaseResponse:
     store.reset()
     raw_event_store.reset()
     return engine.build_case(store.snapshot())
+
+
+@router.get("/events/live", response_model=LiveEventsResponse)
+def get_live_events(limit: int = 100) -> LiveEventsResponse:
+    result = raw_event_store.list_recent_events(limit=limit)
+    return LiveEventsResponse(
+        total=result["total"],
+        events=[LiveEventResponse.from_raw(row) for row in result["events"]],
+    )

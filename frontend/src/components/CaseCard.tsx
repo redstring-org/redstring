@@ -18,7 +18,7 @@ export function CaseCard({ activeCase }: Props) {
   return (
     <article className={`case-card ${sc}`}>
 
-      {/* 1 — State badge (most prominent) + next action */}
+      {/* 1 — State badge + next action */}
       <div className="state-hero">
         <span className="state-badge">
           <span className="badge-dot" />
@@ -30,17 +30,15 @@ export function CaseCard({ activeCase }: Props) {
         </p>
       </div>
 
-      {/* 2 — Case metadata (subordinate strip) */}
+      {/* 2 — Case metadata strip */}
       <dl className="case-meta">
         <div className="meta-field">
           <dt className="meta-label">Subject</dt>
           <dd className="meta-value">{activeCase.primary_subject}</dd>
         </div>
-        <div className="state-stack">
-          <span className={`state-badge ${activeCase.state ? "state-live" : "state-empty"}`}>
-            {activeCase.state ?? "Awaiting Trigger"}
-          </span>
-          <span className="subject-chip">{activeCase.primary_subject}</span>
+        <div className="meta-field">
+          <dt className="meta-label">Location</dt>
+          <dd className="meta-value">{activeCase.location}</dd>
         </div>
         <div className="meta-field meta-field-full">
           <dt className="meta-label">Trigger</dt>
@@ -78,30 +76,27 @@ export function CaseCard({ activeCase }: Props) {
         </div>
       )}
 
-      <div className="panel-grid">
-        <Timeline items={activeCase.timeline} />
-        <EvidenceList title="Why Linked" items={activeCase.why_linked} emptyText="No linked evidence yet." />
-        <EvidenceList
-          title="What Weakens It"
-          items={activeCase.what_weakens_it}
-          emptyText="Weakening factors will appear once the case opens."
-        />
-        <section className="panel">
-          <div className="panel-eyebrow">Provenance</div>
-          {activeCase.provenance.length === 0 ? (
-            <p className="placeholder">Visible evidence provenance will appear as events are injected.</p>
-          ) : (
-            <ul className="provenance-list">
-              {activeCase.provenance.map((item) => (
-                <li key={item.event_id}>
-                  <strong>{item.label}</strong>
-                  <span>{item.source}</span>
-                  <span>{new Date(item.timestamp).toLocaleString()}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+      {/* 5 — Provenance */}
+      <div className="provenance-bar">
+        <span className="prov-label">Provenance</span>
+        {activeCase.provenance.length === 0 ? (
+          <span className="prov-empty">Will appear as events are injected.</span>
+        ) : (
+          activeCase.provenance.map((item) => (
+            <span className="prov-chip" key={item.event_id}>
+              <strong>{item.label}</strong>
+              <span className="prov-sep">·</span>
+              <span>{item.source}</span>
+              <span className="prov-sep">·</span>
+              <span>
+                {new Date(item.timestamp).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+            </span>
+          ))
+        )}
       </div>
 
     </article>
