@@ -1,0 +1,6 @@
+report_id,occurred_at,reporter,location,description,verified,person_removed
+SPR-0001,2026-04-18T06:05:54.156Z,medical staff,Emergency Department Ambulance Bay,Person in mismatched scrubs observed pushing unattended equipment cases toward Emergency Department Ambulance Bay.,yes,yes
+SPR-0002,2026-04-18T06:46:54.156Z,security,Emergency Department Ambulance Bay,Visitor was reported watching shift change activity near Emergency Department Ambulance Bay and recording on a phone.,yes,no
+SPR-0003,2026-04-18T07:22:54.156Z,patient,Imaging Service Corridor,Visitor was reported watching shift change activity near Imaging Service Corridor and recording on a phone.,yes,yes
+SPR-0004,2026-04-18T07:52:54.156Z,visitor,Pharmacy Hallway,Unidentified person photographed badge readers and access panels near Pharmacy Hallway.,no,no
+SPR-0005,2026-04-18T08:29:54.156Z,medical staff,Labor and Delivery Waiting Area,Unknown person was seen moving a supply cart through Labor and Delivery Waiting Area and could not explain where it came from.,no,no

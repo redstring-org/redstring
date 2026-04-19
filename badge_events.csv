@@ -1,0 +1,127 @@
+timestamp,staff_id,first_name,last_name,role_title,role_category,department,shift,door_name,category,area,door_type,badge_required,action,access_result
+2026-04-18T05:46:00.000+00:00Z,230,Neil,Lewis,Registered Nurse,Clinical staff,Facilities,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T05:49:00.000+00:00Z,261,Quinn,Brown,Security Officer,Security,Emergency,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T05:54:00.000+00:00Z,75,Sydney,Williams,Transport Aide,Support services,Operations,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T05:56:00.000+00:00Z,200,Alex,Hall,Security Officer,Security,Pharmacy,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T05:59:00.000+00:00Z,141,Quinn,Lewis,Transport Aide,Support services,Laboratory,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T05:59:00.000+00:00Z,232,Morgan,Clark,Anesthesiologist,Specialized roles,Anesthesia,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:01:00.000+00:00Z,94,Parker,Martinez,Pharmacist,Specialized roles,Pharmacy,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:02:00.000+00:00Z,18,Bailey,Lee,Security Officer,Security,Facilities,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:03:00.000+00:00Z,153,Harper,Anderson,Lab Technician,Clinical staff,Security,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:04:00.000+00:00Z,141,Quinn,Lewis,Transport Aide,Support services,Laboratory,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:05:00.000+00:00Z,77,Jamie,Williams,Transport Aide,Support services,Anesthesia,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:05:00.000+00:00Z,43,Cameron,Martinez,Lab Technician,Clinical staff,Operations,Night,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:07:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:08:00.000+00:00Z,66,Avery,Clark,Patient Care Assistant,Support services,Surgical,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:10:00.000+00:00Z,15,Riley,Perez,Lab Technician,Clinical staff,Surgical,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:11:00.000+00:00Z,32,Taylor,Moore,Transport Aide,Support services,Facilities,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:11:00.000+00:00Z,191,Quinn,Moore,Radiologic Technologist,Clinical staff,Imaging,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:13:00.000+00:00Z,235,Sydney,Williams,Registered Nurse,Clinical staff,Facilities,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:14:00.000+00:00Z,143,Riley,Lee,Patient Care Assistant,Support services,Operations,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:16:00.000+00:00Z,170,Avery,Anderson,Lab Technician,Clinical staff,Anesthesia,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:16:00.000+00:00Z,252,Neil,Hall,Facilities Technician,Support services,Emergency,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:17:00.000+00:00Z,295,Parker,Lee,Pharmacist,Specialized roles,Emergency,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:18:00.000+00:00Z,173,Drew,Jackson,Facilities Technician,Support services,Infection Control,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:18:00.000+00:00Z,240,Jamie,Wilson,Facilities Technician,Support services,Imaging,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:18:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Emergency Department Ambulance Bay,Restricted,Emergency Department,Restricted Access Door,Yes,enter,Granted
+2026-04-18T06:24:00.000+00:00Z,64,Quinn,Moore,Anesthesiologist,Specialized roles,Security,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:29:00.000+00:00Z,38,Quinn,Moore,Pharmacist,Specialized roles,Anesthesia,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:31:00.000+00:00Z,79,Reese,Martinez,Pharmacist,Specialized roles,Surgical,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:32:00.000+00:00Z,198,Morgan,Young,Transport Aide,Support services,Anesthesia,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:36:00.000+00:00Z,19,Jordan,Lee,Pharmacist,Specialized roles,Imaging,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:39:00.000+00:00Z,159,Alex,Thomas,Registered Nurse,Clinical staff,Facilities,Night,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:39:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Imaging Service Corridor,Internal,Imaging,Internal Corridor Door,Yes,enter,Granted
+2026-04-18T06:40:00.000+00:00Z,10,Skyler,Lewis,Anesthesiologist,Specialized roles,Security,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:41:00.000+00:00Z,224,Quinn,Williams,Lab Technician,Clinical staff,Emergency,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:42:00.000+00:00Z,249,Taylor,Martinez,Registered Nurse,Clinical staff,Emergency,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:42:00.000+00:00Z,186,Emerson,Clark,Lab Technician,Clinical staff,Imaging,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:45:00.000+00:00Z,57,Drew,Hall,Biomedical Technician,Specialized roles,Security,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:45:00.000+00:00Z,103,Morgan,Hall,Security Officer,Security,Anesthesia,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:46:00.000+00:00Z,63,Parker,Young,Transport Aide,Support services,Infection Control,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:52:00.000+00:00Z,288,Cameron,Clark,Anesthesiologist,Specialized roles,Pharmacy,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:57:00.000+00:00Z,187,Quinn,Williams,Pharmacist,Specialized roles,Facilities,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T06:57:00.000+00:00Z,286,Skyler,Davis,Facilities Technician,Support services,Pharmacy,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:57:00.000+00:00Z,178,Riley,Williams,Radiologic Technologist,Clinical staff,Imaging,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T06:59:00.000+00:00Z,255,Taylor,Williams,Facilities Technician,Support services,Pharmacy,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:00:00.000+00:00Z,80,Casey,Davis,Radiologic Technologist,Clinical staff,Emergency,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:00:00.000+00:00Z,93,Parker,Walker,Transport Aide,Support services,Pharmacy,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:04:00.000+00:00Z,260,Skyler,Moore,Biomedical Technician,Specialized roles,Anesthesia,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:05:00.000+00:00Z,103,Morgan,Hall,Security Officer,Security,Anesthesia,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:07:00.000+00:00Z,85,Riley,Clark,Biomedical Technician,Specialized roles,Pharmacy,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:08:00.000+00:00Z,53,Morgan,Davis,Security Officer,Security,Facilities,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:09:00.000+00:00Z,172,Neil,Williams,Radiologic Technologist,Clinical staff,Facilities,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:11:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Pharmacy Hallway,Restricted,Pharmacy,Restricted Access Door,Yes,enter,Denied
+2026-04-18T07:13:00.000+00:00Z,183,Bailey,Young,Anesthesiologist,Specialized roles,Emergency,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:14:00.000+00:00Z,86,Cameron,Lee,Registered Nurse,Clinical staff,Infection Control,Night,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:15:00.000+00:00Z,69,Skyler,Moore,Biomedical Technician,Specialized roles,Surgical,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:19:00.000+00:00Z,79,Reese,Martinez,Pharmacist,Specialized roles,Surgical,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:20:00.000+00:00Z,203,Emerson,Young,Registered Nurse,Clinical staff,Surgical,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:20:00.000+00:00Z,198,Morgan,Young,Transport Aide,Support services,Anesthesia,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:21:00.000+00:00Z,159,Alex,Thomas,Registered Nurse,Clinical staff,Facilities,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:23:00.000+00:00Z,188,Sydney,Jackson,Facilities Technician,Support services,Imaging,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:26:00.000+00:00Z,272,Cameron,Davis,Lab Technician,Clinical staff,Facilities,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:26:00.000+00:00Z,34,Harper,Perez,Biomedical Technician,Specialized roles,Surgical,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:28:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Data Center Corridor,Restricted,IT / Network,Restricted Access Door,Yes,enter,Denied
+2026-04-18T07:30:00.000+00:00Z,225,Sydney,Perez,Patient Care Assistant,Support services,Emergency,Rotating,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:31:00.000+00:00Z,179,Quinn,Anderson,Radiologic Technologist,Clinical staff,Operations,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:31:00.000+00:00Z,108,Emerson,Walker,Biomedical Technician,Specialized roles,Imaging,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:34:00.000+00:00Z,74,Casey,Davis,Anesthesiologist,Specialized roles,Infection Control,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:37:00.000+00:00Z,162,Parker,Perez,Pharmacist,Specialized roles,Infection Control,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:37:00.000+00:00Z,189,Taylor,Brown,Radiologic Technologist,Clinical staff,Facilities,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:43:00.000+00:00Z,260,Skyler,Moore,Biomedical Technician,Specialized roles,Anesthesia,Night,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:44:00.000+00:00Z,38,Quinn,Moore,Pharmacist,Specialized roles,Anesthesia,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:44:00.000+00:00Z,207,Jordan,Lee,Facilities Technician,Support services,Facilities,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:46:00.000+00:00Z,165,Drew,Williams,Lab Technician,Clinical staff,Infection Control,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:53:00.000+00:00Z,145,Avery,Walker,Facilities Technician,Support services,Security,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:53:00.000+00:00Z,67,Cameron,Jackson,Lab Technician,Clinical staff,Security,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:56:00.000+00:00Z,140,Avery,Perez,Patient Care Assistant,Support services,Imaging,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:57:00.000+00:00Z,96,Morgan,Davis,Patient Care Assistant,Support services,Facilities,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T07:58:00.000+00:00Z,225,Sydney,Perez,Patient Care Assistant,Support services,Emergency,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T07:59:00.000+00:00Z,96,Morgan,Davis,Patient Care Assistant,Support services,Facilities,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:00:00.000+00:00Z,281,Riley,Wilson,Biomedical Technician,Specialized roles,Infection Control,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:01:00.000+00:00Z,230,Neil,Lewis,Registered Nurse,Clinical staff,Facilities,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:03:00.000+00:00Z,34,Harper,Perez,Biomedical Technician,Specialized roles,Surgical,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:04:00.000+00:00Z,35,Harper,Thomas,Patient Care Assistant,Support services,Security,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:06:00.000+00:00Z,14,Jamie,Thomas,Transport Aide,Support services,Emergency,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:11:00.000+00:00Z,181,Alex,Lee,Anesthesiologist,Specialized roles,Surgical,Night,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:11:00.000+00:00Z,228,Parker,Lee,Anesthesiologist,Specialized roles,Imaging,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:16:00.000+00:00Z,258,Reese,Lee,Security Officer,Security,Operations,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:19:00.000+00:00Z,157,Cameron,Jackson,Radiologic Technologist,Clinical staff,Imaging,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:21:00.000+00:00Z,122,Taylor,Perez,Security Officer,Security,Surgical,Night,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:21:00.000+00:00Z,229,Sydney,Brown,Security Officer,Security,Security,Night,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:22:00.000+00:00Z,22,Morgan,Clark,Pharmacist,Specialized roles,Surgical,Rotating,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:22:00.000+00:00Z,65,Emerson,Anderson,Radiologic Technologist,Clinical staff,Emergency,Day,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:26:00.000+00:00Z,241,Jamie,Moore,Transport Aide,Support services,Security,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:26:00.000+00:00Z,275,Morgan,Perez,Radiologic Technologist,Clinical staff,Laboratory,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:27:00.000+00:00Z,129,Skyler,Wilson,Facilities Technician,Support services,Facilities,Night,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:28:00.000+00:00Z,66,Avery,Clark,Patient Care Assistant,Support services,Surgical,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:29:00.000+00:00Z,129,Skyler,Wilson,Facilities Technician,Support services,Facilities,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:29:00.000+00:00Z,42,Neil,Brown,Patient Care Assistant,Support services,Imaging,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:30:00.000+00:00Z,147,Parker,Brown,Security Officer,Security,Anesthesia,Night,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:30:00.000+00:00Z,44,Avery,Hall,Security Officer,Security,Anesthesia,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:31:00.000+00:00Z,231,Skyler,Young,Transport Aide,Support services,Facilities,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:32:00.000+00:00Z,180,Harper,Perez,Facilities Technician,Support services,Emergency,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:35:00.000+00:00Z,45,Skyler,Walker,Transport Aide,Support services,Pharmacy,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:38:00.000+00:00Z,210,Bailey,Jackson,Transport Aide,Support services,Emergency,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:43:00.000+00:00Z,90,Riley,Williams,Security Officer,Security,Laboratory,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:46:00.000+00:00Z,21,Cameron,Anderson,Lab Technician,Clinical staff,Pharmacy,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:46:00.000+00:00Z,67,Cameron,Jackson,Lab Technician,Clinical staff,Security,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:47:00.000+00:00Z,154,Parker,Moore,Pharmacist,Specialized roles,Facilities,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:49:00.000+00:00Z,88,Casey,Clark,Transport Aide,Support services,Pharmacy,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:53:00.000+00:00Z,54,Parker,Walker,Biomedical Technician,Specialized roles,Imaging,Day,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:55:00.000+00:00Z,224,Quinn,Williams,Lab Technician,Clinical staff,Emergency,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T08:56:00.000+00:00Z,192,Parker,Anderson,Security Officer,Security,Imaging,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:57:00.000+00:00Z,130,Mia,Moore,Radiologic Technologist,Clinical staff,Facilities,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T08:59:00.000+00:00Z,242,Jamie,Williams,Security Officer,Security,Facilities,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T09:00:00.000+00:00Z,146,Harper,Hall,Facilities Technician,Support services,Laboratory,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:01:00.000+00:00Z,270,Cameron,Clark,Anesthesiologist,Specialized roles,Facilities,Rotating,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T09:09:00.000+00:00Z,255,Taylor,Williams,Facilities Technician,Support services,Pharmacy,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:10:00.000+00:00Z,83,Jamie,Jackson,Pharmacist,Specialized roles,Anesthesia,Day,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:10:00.000+00:00Z,187,Quinn,Williams,Pharmacist,Specialized roles,Facilities,Rotating,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:11:00.000+00:00Z,248,Cameron,Anderson,Radiologic Technologist,Clinical staff,Infection Control,Rotating,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T09:13:00.000+00:00Z,264,Harper,Perez,Anesthesiologist,Specialized roles,Infection Control,Day,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T09:16:00.000+00:00Z,289,Bailey,Walker,Registered Nurse,Clinical staff,Imaging,Day,Main Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:18:00.000+00:00Z,260,Skyler,Moore,Biomedical Technician,Specialized roles,Anesthesia,Night,Service Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:18:00.000+00:00Z,159,Alex,Thomas,Registered Nurse,Clinical staff,Facilities,Night,Loading Dock Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
+2026-04-18T09:22:00.000+00:00Z,16,Avery,Thomas,Facilities Technician,Support services,Pharmacy,Night,Visitor Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,exit,Granted
+2026-04-18T09:25:00.000+00:00Z,147,Parker,Brown,Security Officer,Security,Anesthesia,Night,Emergency Department Entrance,Perimeter,Hospital Perimeter,Perimeter Door,Yes,enter,Granted
