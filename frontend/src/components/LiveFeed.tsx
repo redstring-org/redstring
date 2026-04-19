@@ -23,7 +23,6 @@ function formatTime(ts: string | null): string {
 }
 
 export function LiveFeed({ events, total }: Props) {
-  const bottomRef = useRef<HTMLDivElement>(null);
   const [newIds, setNewIds] = useState<Set<number>>(new Set());
   const prevCountRef = useRef(0);
 
@@ -31,13 +30,14 @@ export function LiveFeed({ events, total }: Props) {
     if (events.length > prevCountRef.current) {
       const added = events.slice(prevCountRef.current).map((e) => e.id);
       setNewIds(new Set(added));
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
       const timer = setTimeout(() => setNewIds(new Set()), 1400);
       prevCountRef.current = events.length;
       return () => clearTimeout(timer);
     }
     prevCountRef.current = events.length;
   }, [events]);
+
+  const reversed = [...events].reverse();
 
   return (
     <section className="live-feed">
@@ -50,13 +50,13 @@ export function LiveFeed({ events, total }: Props) {
       </div>
 
       <div className="live-feed-scroll">
-        {events.length === 0 ? (
+        {reversed.length === 0 ? (
           <p className="feed-empty">
             No events yet. Stream data to see the noise RedString is processing:
             <code>python data_gen/post_badge_events_csv.py --interval-seconds 0.5</code>
           </p>
         ) : (
-          events.map((ev) => {
+          reversed.map((ev) => {
             const meta = KIND_META[ev.kind] ?? { label: ev.kind, cls: "feed-tag-default" };
             return (
               <div
@@ -70,7 +70,6 @@ export function LiveFeed({ events, total }: Props) {
             );
           })
         )}
-        <div ref={bottomRef} />
       </div>
     </section>
   );
